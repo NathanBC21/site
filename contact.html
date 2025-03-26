@@ -278,15 +278,12 @@
   <!-- Form Processing -->
   <script>
     $(document).ready(function() {
-      // Manipula o clique no botão
       $('#submit-contact').on('click', function() {
-        // Verifica se o formulário é válido
         if (!$('#contact-form')[0].checkValidity()) {
           $('#contact-form')[0].reportValidity();
           return;
         }
 
-        // Pega os dados do formulário
         const formData = {
           name: $('#name').val().trim(),
           email: $('#email').val().trim(),
@@ -295,28 +292,26 @@
         };
 
         try {
-          // Pega mensagens existentes ou cria array vazio
-          let messages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
+          // Cria o arquivo JSON para download
+          const dataStr = JSON.stringify(formData, null, 2);
+          const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
           
-          // Adiciona nova mensagem
-          messages.push(formData);
+          // Cria um link temporário para download
+          const exportFileDefaultName = 'contact_' + new Date().getTime() + '.json';
+          const linkElement = document.createElement('a');
+          linkElement.setAttribute('href', dataUri);
+          linkElement.setAttribute('download', exportFileDefaultName);
+          linkElement.click();
           
-          // Salva no localStorage
-          localStorage.setItem('contact_messages', JSON.stringify(messages));
-          
-          // Feedback de sucesso
-          $('#msg').html('<div class="alert alert-success">Mensagem enviada com sucesso!</div>');
-          
-          // Limpa o formulário
+          // Feedback e limpa formulário
+          $('#msg').html('<div class="alert alert-success">Mensagem salva com sucesso!</div>');
           $('#contact-form')[0].reset();
           
-          // Limpa a mensagem de sucesso após 3 segundos
           setTimeout(function() {
             $('#msg').html('');
           }, 3000);
 
         } catch (error) {
-          // Feedback de erro
           $('#msg').html('<div class="alert alert-danger">Erro ao salvar a mensagem. Por favor, tente novamente.</div>');
         }
       });
