@@ -140,7 +140,7 @@
                 </ul>    
 
                 <!-- Contact Form -->
-                <form id="contact-form" class="contact-form mt-30 mb-30" method="post">
+                <form id="contact-form" class="contact-form mt-30 mb-30">
                   <div class="row row-30">
                     <div class="col-lg-6">
                       <div class="form-group">
@@ -161,7 +161,7 @@
                     <textarea id="message" name="message" rows="7" required="required"></textarea>
                   </div>
 
-                  <input type="submit" class="btn btn--lg btn--color btn--wide btn--button" value="Send Message" id="submit-message">
+                  <button type="submit" class="btn btn--lg btn--color btn--wide btn--button">Send Message</button>
                   <div id="msg" class="message"></div>
                 </form>
               </div>
@@ -279,7 +279,7 @@
   <script>
     $(document).ready(function() {
       $('#contact-form').on('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Previne o envio padrão do formulário
         
         // Pega os dados do formulário
         const formData = {
@@ -299,7 +299,7 @@
         localStorage.setItem('contact_messages', JSON.stringify(messages));
         
         // Feedback e limpa formulário
-        alert('Mensagem enviada com sucesso!');
+        $('#msg').html('<div class="alert alert-success">Mensagem enviada com sucesso!</div>');
         this.reset();
       });
     });
