@@ -140,7 +140,7 @@
                 </ul>    
 
                 <!-- Contact Form -->
-                <form id="contact-form" class="contact-form mt-30 mb-30">
+                <form id="contact-form" class="contact-form mt-30 mb-30" onsubmit="return false;">
                   <div class="row row-30">
                     <div class="col-lg-6">
                       <div class="form-group">
@@ -161,7 +161,7 @@
                     <textarea id="message" name="message" rows="7" required="required"></textarea>
                   </div>
 
-                  <button type="submit" class="btn btn--lg btn--color btn--wide btn--button">Send Message</button>
+                  <button type="button" id="submit-contact" class="btn btn--lg btn--color btn--wide btn--button">Send Message</button>
                   <div id="msg" class="message"></div>
                 </form>
               </div>
@@ -278,29 +278,47 @@
   <!-- Form Processing -->
   <script>
     $(document).ready(function() {
-      $('#contact-form').on('submit', function(e) {
-        e.preventDefault(); // Previne o envio padrão do formulário
-        
+      // Manipula o clique no botão
+      $('#submit-contact').on('click', function() {
+        // Verifica se o formulário é válido
+        if (!$('#contact-form')[0].checkValidity()) {
+          $('#contact-form')[0].reportValidity();
+          return;
+        }
+
         // Pega os dados do formulário
         const formData = {
-          name: $('#name').val(),
-          email: $('#email').val(),
-          message: $('#message').val(),
+          name: $('#name').val().trim(),
+          email: $('#email').val().trim(),
+          message: $('#message').val().trim(),
           date: new Date().toISOString()
         };
 
-        // Pega mensagens existentes ou cria array vazio
-        let messages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
-        
-        // Adiciona nova mensagem
-        messages.push(formData);
-        
-        // Salva no localStorage
-        localStorage.setItem('contact_messages', JSON.stringify(messages));
-        
-        // Feedback e limpa formulário
-        $('#msg').html('<div class="alert alert-success">Mensagem enviada com sucesso!</div>');
-        this.reset();
+        try {
+          // Pega mensagens existentes ou cria array vazio
+          let messages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
+          
+          // Adiciona nova mensagem
+          messages.push(formData);
+          
+          // Salva no localStorage
+          localStorage.setItem('contact_messages', JSON.stringify(messages));
+          
+          // Feedback de sucesso
+          $('#msg').html('<div class="alert alert-success">Mensagem enviada com sucesso!</div>');
+          
+          // Limpa o formulário
+          $('#contact-form')[0].reset();
+          
+          // Limpa a mensagem de sucesso após 3 segundos
+          setTimeout(function() {
+            $('#msg').html('');
+          }, 3000);
+
+        } catch (error) {
+          // Feedback de erro
+          $('#msg').html('<div class="alert alert-danger">Erro ao salvar a mensagem. Por favor, tente novamente.</div>');
+        }
       });
     });
   </script>
