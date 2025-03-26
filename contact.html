@@ -292,16 +292,14 @@
         };
 
         try {
-          // Cria o arquivo JSON para download
-          const dataStr = JSON.stringify(formData, null, 2);
-          const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-          
-          // Cria um link temporário para download
-          const exportFileDefaultName = 'contact_' + new Date().getTime() + '.json';
-          const linkElement = document.createElement('a');
-          linkElement.setAttribute('href', dataUri);
-          linkElement.setAttribute('download', exportFileDefaultName);
-          linkElement.click();
+          $.ajax({
+            url: 'process_contact.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+              // Aqui sim os dados seriam salvos em um arquivo JSON no servidor
+            }
+          });
           
           // Feedback e limpa formulário
           $('#msg').html('<div class="alert alert-success">Mensagem salva com sucesso!</div>');
