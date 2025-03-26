@@ -90,9 +90,7 @@
                     <li><a href="single-post.html">Single Post</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a href="#">Purchase</a>
-                </li>
+                
               </ul> <!-- end menu -->
             </nav> <!-- end nav-wrap -->
 
@@ -149,19 +147,19 @@
               <!-- Optin Form -->
               <div class="optin">
                 <h3 class="optin__title">Get the free checklist, 7 ways to improve your business</h3>
-                <form class="optin__form">
+                <form class="optin__form" id="optin-form">
                   <div class="optin__form-group form-group">                    
-                    <input type="text" class="form-input optin__input" id="optin-name" required>
+                    <input type="text" class="form-input optin__input" id="optin-name" name="name" required>
                     <label for="optin-name" class="optin__label">Your name</label>
                     <span class="input-underline"></span>
                   </div>
                   <div class="optin__form-group form-group">
-                    <input type="email" class="form-input optin__input" id="optin-email" required>
+                    <input type="email" class="form-input optin__input" id="optin-email" name="email" required>
                     <label for="optin-email" class="optin__label">Your e-mail address</label>
                     <span class="input-underline"></span>
                   </div>
                   
-                  <button class="optin__btn btn btn--md btn--color btn--button">Download Free</button>                 
+                  <button type="submit" class="optin__btn btn btn--md btn--color btn--button">Download Free</button>                 
                 </form>
               </div>
             </div>
@@ -478,7 +476,7 @@
                   Take your business to the next level
                 </h3>
                 <a href="#" class="btn btn--lg btn--color">
-                  <span>Let’s Work Together</span>
+                  <span>Let's Work Together</span>
                 </a>
               </div>                
             </div> 
@@ -577,6 +575,33 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/scripts.js"></script>
+
+  <!-- Form Processing -->
+  <script>
+    $(document).ready(function() {
+      $('#optin-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+          url: 'process_optin.php',
+          type: 'POST',
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function(response) {
+            if (response.success) {
+              alert(response.message);
+              $('#optin-form')[0].reset();
+            } else {
+              alert('Erro: ' + response.error);
+            }
+          },
+          error: function() {
+            alert('Erro ao processar a requisição');
+          }
+        });
+      });
+    });
+  </script>
 
   <!-- Cookies -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>

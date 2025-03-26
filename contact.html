@@ -90,9 +90,7 @@
                     <li><a href="single-post.html">Single Post</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a href="#">Purchase</a>
-                </li>
+                
               </ul> <!-- end menu -->
             </nav> <!-- end nav-wrap -->
 
@@ -116,7 +114,7 @@
         <div class="container">
           <div class="page-title__holder">
             <h1 class="page-title__title">Contact</h1>
-            <p class="page-title__subtitle">Let’s have a discussion</p>
+            <p class="page-title__subtitle">Let's have a discussion</p>
           </div>
         </div>
       </section> <!-- end page title -->
@@ -142,18 +140,18 @@
                 </ul>    
 
                 <!-- Contact Form -->
-                <form id="contact-form" class="contact-form mt-30 mb-30" method="post" action="#">
+                <form id="contact-form" class="contact-form mt-30 mb-30" method="post">
                   <div class="row row-30">
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label for="name">Name <abbr title="required" class="required">*</abbr></label>
-                        <input name="name" id="name" type="text">
+                        <input name="name" id="name" type="text" required>
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label for="email">Email <abbr title="required" class="required">*</abbr></label>
-                        <input name="email" id="email" type="email">
+                        <input name="email" id="email" type="email" required>
                       </div>
                     </div>
                   </div>
@@ -276,6 +274,33 @@
   <script src="js/gmap3.min.js"></script>
   <script src="js/google-map.js"></script>
   <script src="js/scripts.js"></script>
+
+  <!-- Form Processing -->
+  <script>
+    $(document).ready(function() {
+      $('#contact-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+          url: 'process_contact.php',
+          type: 'POST',
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function(response) {
+            if (response.success) {
+              alert(response.message);
+              $('#contact-form')[0].reset();
+            } else {
+              alert('Erro: ' + response.error);
+            }
+          },
+          error: function() {
+            alert('Erro ao processar a requisição');
+          }
+        });
+      });
+    });
+  </script>
 
   <!-- Cookies -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>

@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Pedro Oliveira",
+        "email": "pedro@exemplo.com",
+        "message": "Gostaria de mais informações sobre os serviços.",
+        "date": "2024-03-26 20:30:00"
+    },
+    {
+        "name": "Ana Costa",
+        "email": "ana@exemplo.com",
+        "message": "Interessada em parceria comercial.",
+        "date": "2024-03-26 20:45:00"
+    }
+] 
