@@ -582,23 +582,25 @@
       $('#optin-form').on('submit', function(e) {
         e.preventDefault();
         
-        $.ajax({
-          url: 'process_optin.php',
-          type: 'POST',
-          data: $(this).serialize(),
-          dataType: 'json',
-          success: function(response) {
-            if (response.success) {
-              alert(response.message);
-              $('#optin-form')[0].reset();
-            } else {
-              alert('Erro: ' + response.error);
-            }
-          },
-          error: function() {
-            alert('Erro ao processar a requisição');
-          }
-        });
+        // Pega os dados do formulário
+        const formData = {
+          name: $('#optin-name').val(),
+          email: $('#optin-email').val(),
+          date: new Date().toISOString()
+        };
+
+        // Pega dados existentes ou cria array vazio
+        let subscribers = JSON.parse(localStorage.getItem('optin_subscribers') || '[]');
+        
+        // Adiciona novo inscrito
+        subscribers.push(formData);
+        
+        // Salva no localStorage
+        localStorage.setItem('optin_subscribers', JSON.stringify(subscribers));
+        
+        // Feedback e limpa formulário
+        alert('Inscrição realizada com sucesso!');
+        this.reset();
       });
     });
   </script>
